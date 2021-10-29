@@ -41,7 +41,11 @@
         <!--配置文件-->
         <property name="configs">
             <map>
+<<<<<<< HEAD
+                <entry key="python_file" value="D:\\test.py"/>
+=======
                 <entry key="python_path" value="D:\\"/>
+>>>>>>> fd24152... 实现调用python功能
                 <entry key="python_exec" value="python"/>
             </map>
         </property>

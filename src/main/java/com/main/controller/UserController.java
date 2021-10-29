@@ -3,14 +3,19 @@ package com.main.controller;
 import com.main.model.User;
 import com.main.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.main.utils.JsonData;
 
+import javax.swing.*;
 import java.io.*;
+import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-
+import com.main.utils.Configs;
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -26,8 +31,15 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value="/select",produces="application/json;charset=UTF-8")
     public String selectUser() throws IOException, InterruptedException {
-        String exe = "python";
-        String command = "D:\\test.py";
+
+
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+        Configs c = (Configs) ctx.getBean("configs");
+        String exe = c.getConfig("python_exec");
+        String path= c.getConfig("python_path");
+        String command = path+"test.py";
+        System.out.println(command);
         String[] cmdArr = new String[] {exe, command};
         Process process = Runtime.getRuntime().exec(cmdArr);
         InputStream is = process.getInputStream();
