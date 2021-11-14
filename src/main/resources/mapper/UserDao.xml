@@ -4,8 +4,16 @@
 <!-- 设置为IUserDao接口方法提供sql语句配置 -->
 <mapper namespace="com.main.dao.IUserDao">
 
-    <select id="selectUser" resultType="User" parameterType="long">
+    <select id="selectUserById" resultType="User" parameterType="long">
         SELECT * FROM user WHERE id = #{id}
     </select>
 
+    <select id="selectUserByUsername" resultType="User" parameterType="String">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+
+    <insert id="addUser" parameterType="User">
+        INSERT  INTO user (username, password,nickname)
+        values (#{username}, #{password},#{nickname})
+    </insert>
 </mapper>

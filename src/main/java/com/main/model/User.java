@@ -1,50 +1,52 @@
 package com.main.model;
 
+import java.util.Objects;
+
 public class User {
-
     private long id;
-    private String email;
-    private String mobile;
     private String username;
-    private String role;
+    private String nickname;
+    private String password;
 
-    public long getId() {
+    public long getId()
+    {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getUsername() {
+    public String getUsername()
+    {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(String username)
+    {
         this.username = username;
     }
 
-    public String getRole() {
-        return role;
+
+    public String getNickname()
+    {
+        return nickname;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setNickname(String nickname)
+    {
+        this.nickname = nickname;
     }
+
+    public Boolean checkPassword(String password)
+    {
+        return Objects.equals(Encrypt(password), this.password);
+    }
+
+    public void setPassword(String password)
+    {
+        this.password = Encrypt(password);
+    }
+
+    private String Encrypt(String password)
+    {
+        return password;
+    }
+
 }

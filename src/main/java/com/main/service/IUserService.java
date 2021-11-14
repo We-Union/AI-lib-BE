@@ -4,5 +4,7 @@ import com.main.model.User;
 
 public interface IUserService {
 
-    public User selectUser(long userId);
+    public User selectUserByID(long userId);
+    public User selectUserByUsername(String username);
+    public int addUser(User user);
 }

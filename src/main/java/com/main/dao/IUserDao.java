@@ -4,5 +4,7 @@ import com.main.model.User;
 
 public interface IUserDao {
 
-    User selectUser(long id);
+    User selectUserById(long id);
+    User selectUserByUsername(String username);
+    int addUser(User user);
 }

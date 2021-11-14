@@ -56,5 +56,8 @@
     <servlet-name>springmvc</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-
+  <session-config>
+    <!-- session 过期时间两周 -->
+    <session-timeout>20160</session-timeout>
+  </session-config>
 </web-app>
