@@ -60,9 +60,6 @@ public class UserController {
             return JsonData.buildError(2002,"参数格式不正确");
         }
 
-
-
-
     }
 
     @ResponseBody
@@ -87,6 +84,11 @@ public class UserController {
     @RequestMapping(value="/login",produces="application/json;charset=UTF-8",method = RequestMethod.POST)
     public String login(HttpServletRequest request)
     {
+        HttpSession session = request.getSession(true);
+        if(session.getAttribute("uid") != null)
+        {
+            return JsonData.buildError(4003,"您已经登录！");
+        }
         String username =  request.getParameter("username");
         User user = userService.selectUserByUsername(username);
         if (user == null)
@@ -97,7 +99,6 @@ public class UserController {
         String password = request.getParameter("password");
         if (user.checkPassword(password))
         {
-            HttpSession session = request.getSession(true);
             session.setAttribute("uid",user.getId() );
             return JsonData.buildSuccess(user);
         }
@@ -108,7 +109,18 @@ public class UserController {
 
     }
 
+    @ResponseBody
+    @RequestMapping(value="/logout",produces="application/json;charset=UTF-8",method = RequestMethod.GET)
+    public String logout(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession(true);
+        if(session.getAttribute("uid") == null)
+        {
+            return JsonData.buildError(4003,"您还未登录！");
+        }
+        session.removeAttribute("uid");
+        return JsonData.buildSuccess();
 
-
+    }
 }
 

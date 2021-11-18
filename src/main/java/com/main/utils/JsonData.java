@@ -64,13 +64,6 @@ public class JsonData {
         return JSON.toJSONString(new JsonData(0, data, null));
     }
 
-    /**
-     * 失败，固定状态码
-     */
-    public static String buildError(String msg)
-    {
-        return JSON.toJSONString(new JsonData(-1, null, msg));
-    }
 
     /**
      * 失败，自定义错误码和信息
