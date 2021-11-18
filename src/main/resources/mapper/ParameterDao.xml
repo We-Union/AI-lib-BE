@@ -7,7 +7,7 @@
         SELECT * FROM parameter WHERE id = #{id}
     </select>
 
-    <select id="selectParameterByModel" resultType="Parameter" parameterType="String">
-        SELECT * FROM parameter WHERE model = #{model}
+    <select id="selectParameterByModel" resultType="Parameter">
+        SELECT * FROM parameter WHERE uid = #{uid} and model = #{model}
     </select>
 </mapper>

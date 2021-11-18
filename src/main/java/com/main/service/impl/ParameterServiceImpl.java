@@ -17,9 +17,9 @@ public class ParameterServiceImpl implements ParameterService {
     {
         return parameterDao.selectParameterById(id);
     }
-    public List<Parameter> selectParameterByModel(String model)
+    public List<Parameter> selectParameterByModel(long uid,String model)
     {
-        return parameterDao.selectParameterByModel(model);
+        return parameterDao.selectParameterByModel(uid,model);
     }
 
 

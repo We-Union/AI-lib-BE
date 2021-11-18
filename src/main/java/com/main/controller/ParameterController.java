@@ -60,8 +60,8 @@ public class ParameterController {
             return JsonData.buildError(2001,"缺少参数");
         }
 
-
-        List<Parameter> parameters = parameterService.selectParameterByModel(request.getParameter("model"));
+        long uid =Long.parseLong(session.getAttribute("uid").toString());
+        List<Parameter> parameters = parameterService.selectParameterByModel(uid,request.getParameter("model"));
         return JsonData.buildSuccess(parameters);
 
     }

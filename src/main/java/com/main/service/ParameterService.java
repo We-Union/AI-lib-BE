@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ParameterService {
     Parameter selectParameterByID(long id);
-    List<Parameter> selectParameterByModel(String model);
+    List<Parameter> selectParameterByModel(long uid,String model);
 }
