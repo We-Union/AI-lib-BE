@@ -1,58 +1,59 @@
 package com.main.controller;
 
 import com.main.model.User;
-import com.main.service.IUserService;
+import com.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.main.utils.JsonData;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.swing.*;
-import java.io.*;
-import java.util.Objects;
-import java.util.Properties;
-import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-import com.main.utils.Configs;
+import java.util.regex.Pattern;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
     private Boolean checkUsername(String username)
     {
-        return true;
+       return Pattern.matches("^[a-zA-Z0-9]{6,15}$", username);
     }
     private Boolean checkPassword(String password)
     {
-        return true;
+        return Pattern.matches("^[a-zA-Z0-9.@$!%*#_~?&^]{8,18}$", password);
     }
     private Boolean checkNickname(String nickname)
     {
-        return true;
+        return Pattern.matches("^[a-zA-Z0-9\u4e00-\u9fa5_-]{2,15}$", nickname);
     }
 
 
     @Autowired
-    IUserService userService;
+    UserService userService;
     @ResponseBody
     @RequestMapping(value="/register",produces="application/json;charset=UTF-8",method = RequestMethod.POST)
     public String Reegister(HttpServletRequest request)
     {
-        String username =  request.getParameter("username");
+        String username = request.getParameter("username");
         String password = request.getParameter("password");
         String nickname = request.getParameter("nickname");
 
         if(checkNickname(nickname) && checkUsername(username) && checkPassword(password))
         {
-            User user = new User();
-            user.setUsername(username);
-            user.setNickname(nickname);
-            user.setPassword(password);
-            int result = userService.addUser(user);
-            return JsonData.buildSuccess();
+            User select_result = userService.selectUserByUsername(username);
+            if(select_result==null)
+            {
+                User user = new User();
+                user.setUsername(username);
+                user.setNickname(nickname);
+                user.setPassword(password);
+                int result = userService.addUser(user);
+                return JsonData.buildSuccess();
+            }
+            else
+            {
+                return JsonData.buildError(2003,"用户名已存在");
+            }
+
         }
         else
         {
@@ -65,7 +66,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping(value="/me",produces="application/json;charset=UTF-8")
+    @RequestMapping(value="/me",produces="application/json;charset=UTF-8",method = RequestMethod.GET)
     public String me(HttpServletRequest request)
     {
         HttpSession session = request.getSession();

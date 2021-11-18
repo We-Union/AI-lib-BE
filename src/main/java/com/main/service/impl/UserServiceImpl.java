@@ -1,17 +1,17 @@
 package com.main.service.impl;
 
-import com.main.dao.IUserDao;
+import com.main.dao.UserDao;
 import com.main.model.User;
-import com.main.service.IUserService;
+import com.main.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
 @Service("userService")
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl implements UserService {
 
     @Resource
-    private IUserDao userDao;
+    private UserDao userDao;
 
     public User selectUserByID(long userId)
     {

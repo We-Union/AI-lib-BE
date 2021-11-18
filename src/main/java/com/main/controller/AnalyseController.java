@@ -36,7 +36,6 @@ public class AnalyseController {
         String exe = c.getConfig("python_exec");
         String path = c.getConfig("python_path");
         String command = path + "test.py";
-        System.out.println(command);
         String[] cmdArr = new String[]{exe, command};
         Process process = Runtime.getRuntime().exec(cmdArr);
         InputStream is = process.getInputStream();

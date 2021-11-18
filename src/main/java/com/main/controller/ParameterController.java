@@ -1,48 +1,50 @@
 package com.main.controller;
+import com.main.model.Parameter;
+import com.main.model.User;
+import com.main.service.ParameterService;
+import com.main.service.UserService;
+import com.main.utils.JsonData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import com.main.utils.Configs;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/parameter")
 public class ParameterController {
+    @Autowired
+    ParameterService parameterService;
 
-    //    @Autowired
-//    IUserService userService;
-//    @ResponseBody
-//    @RequestMapping(value="/select",produces="application/json;charset=UTF-8")
-//    public String selectUser(){
-//        User user = userService.selectUser(1);
-//        return JsonData.buildSuccess(user);
-//    }
     @ResponseBody
-    @RequestMapping(value = "/select", produces = "application/json;charset=UTF-8")
-    public String selectUser() throws IOException, InterruptedException {
+    @RequestMapping(value="/getbyid",produces="application/json;charset=UTF-8",method = RequestMethod.GET)
+    public String getParameterByid(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("uid") == null) {
+            return JsonData.buildError(4004, "你还未登录，请先登录");
+        }
+        if(request.getParameter("id")==null)
+        {
+            return JsonData.buildError(2001,"缺少参数");
+        }
 
+        long id = Long.parseLong(request.getParameter("id"));
+        Parameter parameter = parameterService.selectParameterByID(id);
+        if(parameter == null)
+        {
+            return JsonData.buildError(4004,"参数不存在");
+        }
 
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        long uid = (long)session.getAttribute("uid");
+        if(parameter.getUid()!=uid)
+        {
+            return JsonData.buildError(4003,"您无权访问此参数");
+        }
 
-        Configs c = (Configs) ctx.getBean("configs");
-        String exe = c.getConfig("python_exec");
-        String path = c.getConfig("python_path");
-        String command = path + "test.py";
-        System.out.println(command);
-        String[] cmdArr = new String[]{exe, command};
-        Process process = Runtime.getRuntime().exec(cmdArr);
-        InputStream is = process.getInputStream();
-        String str = new BufferedReader(new InputStreamReader(is))
-                .lines().collect(Collectors.joining(System.lineSeparator()));
-        process.waitFor();
-        return str;
+        return JsonData.buildSuccess(parameter);
+
     }
+
 }
+

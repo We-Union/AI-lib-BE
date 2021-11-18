@@ -2,7 +2,7 @@ package com.main.dao;
 
 import com.main.model.User;
 
-public interface IUserDao {
+public interface UserDao {
 
     User selectUserById(long id);
     User selectUserByUsername(String username);
