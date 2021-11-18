@@ -6,6 +6,7 @@ import com.main.service.ParameterService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("parameterService")
 public class ParameterServiceImpl implements ParameterService {
@@ -15,6 +16,10 @@ public class ParameterServiceImpl implements ParameterService {
     public Parameter selectParameterByID(long id)
     {
         return parameterDao.selectParameterById(id);
+    }
+    public List<Parameter> selectParameterByModel(String model)
+    {
+        return parameterDao.selectParameterByModel(model);
     }
 
 

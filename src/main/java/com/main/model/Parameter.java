@@ -4,11 +4,12 @@ public class Parameter {
     private long id;
     public long uid;
     public String parameter;
+    private String model;
+
     public long getId()
     {
         return id;
     }
-
     public String getParameter()
     {
         return parameter;
@@ -16,5 +17,8 @@ public class Parameter {
     public long getUid()
     {
         return uid;
+    }
+    public String getModel() {
+        return model;
     }
 }
