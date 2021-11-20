@@ -41,7 +41,7 @@
         <!--配置文件-->
         <property name="configs">
             <map>
-                <entry key="python_path" value="D:\\"/>
+                <entry key="python_file" value="D:\\test.py"/>
                 <entry key="python_exec" value="python"/>
             </map>
         </property>
