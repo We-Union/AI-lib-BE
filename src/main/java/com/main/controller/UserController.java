@@ -8,21 +8,30 @@ import com.main.utils.JsonData;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @RestController
+
 @RequestMapping("/user")
+
 public class UserController {
     private Boolean checkUsername(String username)
     {
+        if(username == null)
+            return false;
        return Pattern.matches("^[a-zA-Z0-9]{6,15}$", username);
     }
     private Boolean checkPassword(String password)
     {
+        if(password == null)
+            return false;
         return Pattern.matches("^[a-zA-Z0-9.@$!%*#_~?&^]{8,18}$", password);
     }
     private Boolean checkNickname(String nickname)
     {
+        if(nickname == null)
+            return false;
         return Pattern.matches("^[a-zA-Z0-9\u4e00-\u9fa5_-]{2,15}$", nickname);
     }
 
@@ -31,11 +40,12 @@ public class UserController {
     UserService userService;
     @ResponseBody
     @RequestMapping(value="/register",produces="application/json;charset=UTF-8",method = RequestMethod.POST)
-    public String Reegister(HttpServletRequest request)
+
+    public String Reegister(HttpServletRequest request,@RequestBody Map<String,String> map)
     {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String nickname = request.getParameter("nickname");
+        String username = map.get("username");
+        String password = map.get("password");
+        String nickname = map.get("nickname");
 
         if(checkNickname(nickname) && checkUsername(username) && checkPassword(password))
         {
@@ -82,21 +92,21 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value="/login",produces="application/json;charset=UTF-8",method = RequestMethod.POST)
-    public String login(HttpServletRequest request)
+    public String login(HttpServletRequest request,@RequestBody Map<String,String> map)
     {
         HttpSession session = request.getSession(true);
         if(session.getAttribute("uid") != null)
         {
             return JsonData.buildError(4003,"您已经登录！");
         }
-        String username =  request.getParameter("username");
+        String username =  map.get("username");
         User user = userService.selectUserByUsername(username);
         if (user == null)
         {
 
             return JsonData.buildError(4004,"用户名或密码错误");
         }
-        String password = request.getParameter("password");
+        String password = map.get("password");
         if (user.checkPassword(password))
         {
             session.setAttribute("uid",user.getId() );
