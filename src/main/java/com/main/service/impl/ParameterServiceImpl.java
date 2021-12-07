@@ -21,6 +21,10 @@ public class ParameterServiceImpl implements ParameterService {
     {
         return parameterDao.selectParameterByModel(uid,model);
     }
+    public Parameter selectParameterDefault(String model)
+    {
+        return parameterDao.selectParameterDefault(model);
+    }
 
 
 }

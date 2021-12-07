@@ -66,5 +66,20 @@ public class ParameterController {
 
     }
 
+    @ResponseBody
+    @RequestMapping(value="/default",produces="application/json;charset=UTF-8",method = RequestMethod.GET)
+    public String getParameterDefault(HttpServletRequest request)
+    {
+        if(request.getParameter("model")==null)
+        {
+            return JsonData.buildError(2001,"缺少参数");
+        }
+
+
+        Parameter parameters = parameterService.selectParameterDefault(request.getParameter("model"));
+        return JsonData.buildSuccess(parameters);
+
+    }
+
 }
 
