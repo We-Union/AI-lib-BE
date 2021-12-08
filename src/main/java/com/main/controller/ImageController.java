@@ -30,6 +30,10 @@ public class ImageController {
     @RequestMapping(value="/upload",produces="application/json;charset=UTF-8",method = RequestMethod.POST)
     public  String upload(@RequestParam("file")MultipartFile file, HttpServletRequest request) throws IOException {
 
+        HttpSession session = request.getSession();
+        if(session.getAttribute("uid") == null) {
+            return JsonData.buildError(4004, "你还未登录，请先登录");
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSS");
         String res = sdf.format(new Date());
 

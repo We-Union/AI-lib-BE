@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +32,11 @@ public class AnalyseController {
 //    }
     @ResponseBody
     @RequestMapping(value = "/analyse", produces = "application/json;charset=UTF-8")
-    public String selectUser(HttpServletRequest request,@RequestBody Map<String,String> map) throws IOException, InterruptedException {
+    public String Analyse(HttpServletRequest request,@RequestBody Map<String,String> map) throws IOException, InterruptedException {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("uid") == null) {
+            return JsonData.buildError(4004, "你还未登录，请先登录");
+        }
         String model = map.get("model");
         String paramater = map.get("parameter");
 
