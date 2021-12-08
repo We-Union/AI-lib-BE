@@ -53,7 +53,7 @@ public class ImageController {
         System.out.println(newFile);
         // 将内存中的数据写入磁盘
         file.transferTo(newFile);
-        // 完整的url
+
 
         String fileUrl = date.get(Calendar.YEAR) + "/" + (date.get(Calendar.MONTH)+1) + "/" + newFileName;
         Map <String,String> result;
@@ -64,11 +64,10 @@ public class ImageController {
 
     @ResponseBody
     @RequestMapping(value="/download")
-    public void down(HttpServletRequest request, HttpServletResponse response,@RequestBody Map<String,String> map) throws Exception{
-        String file_name = map.get("file");
-        String file_path = request.getSession().getServletContext().getRealPath("WEB-INF/upload/")+file_name;
+    public void download(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        String file_name = request.getParameter("file");
         System.out.println(file_name);
-        System.out.println(file_path);
+        String file_path = request.getSession().getServletContext().getRealPath("WEB-INF/upload/")+file_name;
         //获取输入流
         InputStream bis = new BufferedInputStream(new FileInputStream(new File(file_path)));
         String [] file_name_split = file_name.split("/");
