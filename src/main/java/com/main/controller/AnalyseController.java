@@ -39,8 +39,8 @@ public class AnalyseController {
         }
         String model = map.get("model");
         String paramater = map.get("parameter");
-
-        if(model==null || paramater==null)
+        String data = map.get("data");
+        if(model==null || paramater==null || data == null)
         {
             return JsonData.buildError(2001,"缺少参数");
         }
@@ -50,7 +50,7 @@ public class AnalyseController {
         Configs c = (Configs) ctx.getBean("configs");
         String exe = c.getConfig("python_exec");
         String python_file = c.getConfig("python_file");
-        String[] cmdArr = new String[]{exe, python_file,model,paramater};
+        String[] cmdArr = new String[]{exe, python_file,data,model,paramater};
         Process process = Runtime.getRuntime().exec(cmdArr);
         InputStream is = process.getInputStream();
         String str = new BufferedReader(new InputStreamReader(is))
