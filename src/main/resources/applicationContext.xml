@@ -37,6 +37,7 @@
         <!--数据库连接池-->
         <property name="dataSource" ref="dataSource"/>
     </bean>
+
     <bean id="configs" class="com.main.utils.Configs">
         <!--配置文件-->
         <property name="configs">
