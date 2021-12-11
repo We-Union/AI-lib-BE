@@ -54,7 +54,6 @@ public class ImageController {
             // 如果目标文件所在的目录不存在，则创建父目录
             newFile.getParentFile().mkdirs();
         }
-        System.out.println(newFile);
         // 将内存中的数据写入磁盘
         file.transferTo(newFile);
 

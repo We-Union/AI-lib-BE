@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
+import com.main.utils.HTTP;
 import java.util.stream.Collectors;
 
 @RestController
@@ -45,17 +46,22 @@ public class AnalyseController {
             return JsonData.buildError(2001,"缺少参数");
         }
 
-
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-        Configs c = (Configs) ctx.getBean("configs");
-        String exe = c.getConfig("python_exec");
-        String python_file = c.getConfig("python_file");
-        String[] cmdArr = new String[]{exe, python_file,data,model,paramater};
-        Process process = Runtime.getRuntime().exec(cmdArr);
-        InputStream is = process.getInputStream();
-        String str = new BufferedReader(new InputStreamReader(is))
-                .lines().collect(Collectors.joining(System.lineSeparator()));
-        process.waitFor();
-        return JsonData.buildSuccess(str);
+//        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+//        Configs c = (Configs) ctx.getBean("configs");
+//        String exe = c.getConfig("python_exec");
+//        String python_file = c.getConfig("python_file");
+//        String[] cmdArr = new String[]{exe, python_file,data,model,paramater};
+//        Process process = Runtime.getRuntime().exec(cmdArr);
+//        InputStream is = process.getInputStream();
+//        String str = new BufferedReader(new InputStreamReader(is))
+//                .lines().collect(Collectors.joining(System.lineSeparator()));
+//        process.waitFor();
+        String url = "http://localhost:8002/analyse/";
+        String para=  "param="+paramater+"&model="+model+"&data="+data;
+        System.out.println(url);
+        System.out.println(para);
+        String str=HTTP.sendPost(url,para);
+        System.out.println(str);
+        return str;
     }
 }
