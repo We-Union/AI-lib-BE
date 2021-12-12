@@ -1,4 +1,7 @@
 # AI-lib-BE
+## 相关链接
+分析程序：[AIlib-algorithm](https://github.com/We-Union/AIlib-algorithm/)
+前端：[AI-lib-FE](https://github.com/We-Union/AI-lib-FE)
 ## 使用说明
 1. 配置applicationContext.xml中的configs bean。
 + 配置`remote_url`为分析端地址。
@@ -13,6 +16,9 @@ tomcat:9.0.54(windows x64)
 |2002|参数格式不正确|
 |4004|请求的资源不存在|
 |4003|没有权限完成请求|
+|6xxx|为分析端报错，具体信息请见分析端的说明|
+
+
 
 ## 部分参数要求说明
 + 昵称：2-18位，只能包含大小写字母、汉字、以及“-”，“_”。
