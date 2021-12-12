@@ -69,7 +69,6 @@ public class ImageController {
     @RequestMapping(value="/download")
     public void download(HttpServletRequest request, HttpServletResponse response) throws Exception{
         String file_name = request.getParameter("file");
-        System.out.println(file_name);
         String file_path = request.getSession().getServletContext().getRealPath("WEB-INF/upload/")+file_name;
         //获取输入流
         InputStream bis = new BufferedInputStream(new FileInputStream(new File(file_path)));

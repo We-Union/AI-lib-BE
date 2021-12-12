@@ -46,7 +46,7 @@ public class AnalyseController {
             return JsonData.buildError(2001,"缺少参数");
         }
 
-//        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+
 //        Configs c = (Configs) ctx.getBean("configs");
 //        String exe = c.getConfig("python_exec");
 //        String python_file = c.getConfig("python_file");
@@ -56,12 +56,10 @@ public class AnalyseController {
 //        String str = new BufferedReader(new InputStreamReader(is))
 //                .lines().collect(Collectors.joining(System.lineSeparator()));
 //        process.waitFor();
-        String url = "http://localhost:8002/analyse/";
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        Configs c = (Configs) ctx.getBean("configs");
+        String url = c.getConfig("remote_url");
         String para=  "param="+paramater+"&model="+model+"&data="+data;
-        System.out.println(url);
-        System.out.println(para);
-        String str=HTTP.sendPost(url,para);
-        System.out.println(str);
-        return str;
+        return HTTP.sendPost(url,para);
     }
 }

@@ -42,7 +42,7 @@
         <!--配置文件-->
         <property name="configs">
             <map>
-                <entry key="python_file" value="D:\\test.py"/>
+                <entry key="remote_url" value="http://localhost:8002/analyse/"/>
                 <entry key="python_exec" value="python"/>
             </map>
         </property>
