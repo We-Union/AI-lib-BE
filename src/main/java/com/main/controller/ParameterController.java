@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/parameter")
@@ -80,6 +81,65 @@ public class ParameterController {
         return JsonData.buildSuccess(parameters);
 
     }
+    @ResponseBody
+    @RequestMapping(value="/delete",produces="application/json;charset=UTF-8",method = RequestMethod.DELETE)
+    public String deleteParameter(HttpServletRequest request,@RequestBody Map<String,String> map)
+    {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("uid") == null) {
+            return JsonData.buildError(4004, "你还未登录，请先登录");
+        }
+        if(map.get("id")==null)
+        {
+            return JsonData.buildError(2001,"缺少参数");
+        }
 
+        long id = Long.parseLong(map.get("id"));
+        Parameter parameter = parameterService.selectParameterByID(id);
+        if(parameter == null)
+        {
+            return JsonData.buildError(4004,"参数不存在");
+        }
+
+        long uid = (long)session.getAttribute("uid");
+        if(parameter.getUid()!=uid)
+        {
+            return JsonData.buildError(4003,"您无权访问此参数");
+        }
+        int result = parameterService.deleteParameter(id);
+        if(result==0)
+        {
+            return JsonData.buildError(5001,"数据库错误:"+ result);
+        }
+        return JsonData.buildSuccess();
+
+
+
+    }
+    @ResponseBody
+    @RequestMapping(value="/add",produces="application/json;charset=UTF-8",method = RequestMethod.POST)
+    public String addParameter(HttpServletRequest request,@RequestBody Map<String,String> map)
+    {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("uid") == null) {
+            return JsonData.buildError(4004, "你还未登录，请先登录");
+        }
+        long uid = (long)session.getAttribute("uid");
+        String name = map.get("name");
+        String model = map.get("model");
+        String value = map.get("value");
+        if(name==null || model == null || value == null)
+        {
+            return JsonData.buildError(2001,"缺少参数");
+        }
+        Parameter parameter = new Parameter();
+        parameter.setName(name);
+        parameter.setModel(model);
+        parameter.setType("general");
+        parameter.setUid(uid);
+        parameter.setValue(value);
+        int result = parameterService.addParameter(parameter);
+        return JsonData.buildSuccess();
+    }
 }
 

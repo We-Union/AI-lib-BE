@@ -25,6 +25,14 @@ public class ParameterServiceImpl implements ParameterService {
     {
         return parameterDao.selectParameterDefault(model);
     }
+    public int addParameter(Parameter parameter)
+    {
+        return parameterDao.addParameter(parameter);
+    }
+    public int deleteParameter(long id)
+    {
+        return parameterDao.deleteParameter(id);
+    }
 
 
 }

@@ -13,4 +13,11 @@
     <select id="selectParameterDefault" resultType="Parameter">
         SELECT * FROM parameter WHERE type='default' and model = #{model}
     </select>
+    <insert id="addParameter" parameterType="Parameter">
+        INSERT  INTO parameter (name,uid,model, value,type)
+        values (#{name}, #{uid},#{model},#{value},#{type})
+    </insert>
+    <insert id="deleteParameter" parameterType="long">
+        Delete from parameter where id=#{id}
+    </insert>
 </mapper>

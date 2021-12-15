@@ -47,15 +47,6 @@ public class AnalyseController {
         }
 
 
-//        Configs c = (Configs) ctx.getBean("configs");
-//        String exe = c.getConfig("python_exec");
-//        String python_file = c.getConfig("python_file");
-//        String[] cmdArr = new String[]{exe, python_file,data,model,paramater};
-//        Process process = Runtime.getRuntime().exec(cmdArr);
-//        InputStream is = process.getInputStream();
-//        String str = new BufferedReader(new InputStreamReader(is))
-//                .lines().collect(Collectors.joining(System.lineSeparator()));
-//        process.waitFor();
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         Configs c = (Configs) ctx.getBean("configs");
         String url = c.getConfig("remote_url");

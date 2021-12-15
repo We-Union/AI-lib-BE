@@ -8,4 +8,7 @@ public interface ParameterService {
     Parameter selectParameterByID(long id);
     List<Parameter> selectParameterByModel(long uid,String model);
     Parameter selectParameterDefault(String model);
+    int addParameter(Parameter parameter);
+    int deleteParameter(long id);
+
 }

@@ -6,6 +6,7 @@ public class Parameter {
     public String name;
     public String value;
     private String model;
+    public String type;
 
     public long getId()
     {
@@ -17,5 +18,26 @@ public class Parameter {
     }
     public String getModel() {
         return model;
+    }
+
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
