@@ -20,4 +20,7 @@
     <insert id="deleteParameter" parameterType="long">
         Delete from parameter where id=#{id}
     </insert>
+    <update id="updateParameter" parameterType="Parameter">
+        UPDATE parameter SET value = #{value} WHERE id = #{id}
+    </update>
 </mapper>

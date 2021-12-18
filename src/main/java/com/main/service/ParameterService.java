@@ -10,5 +10,5 @@ public interface ParameterService {
     Parameter selectParameterDefault(String model);
     int addParameter(Parameter parameter);
     int deleteParameter(long id);
-
+    int updateParameter(Parameter parameter);
 }

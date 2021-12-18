@@ -141,5 +141,35 @@ public class ParameterController {
         int result = parameterService.addParameter(parameter);
         return JsonData.buildSuccess();
     }
+
+    @ResponseBody
+    @RequestMapping(value="/update",produces="application/json;charset=UTF-8",method = RequestMethod.PUT)
+    public String updateParameter(HttpServletRequest request,@RequestBody Map<String,String> map)
+    {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("uid") == null) {
+            return JsonData.buildError(4004, "你还未登录，请先登录");
+        }
+        if(map.get("id")==null || map.get("value") == null)
+        {
+            return JsonData.buildError(2001,"缺少参数");
+        }
+
+        long id = Long.parseLong(map.get("id"));
+        Parameter parameter = parameterService.selectParameterByID(id);
+        if(parameter == null)
+        {
+            return JsonData.buildError(4004,"参数不存在");
+        }
+
+        long uid = (long)session.getAttribute("uid");
+        if(parameter.getUid()!=uid)
+        {
+            return JsonData.buildError(4003,"您无权访问此参数");
+        }
+        parameter.setValue(map.get("value"));
+        int result = parameterService.updateParameter(parameter);
+        return JsonData.buildSuccess();
+    }
 }
 

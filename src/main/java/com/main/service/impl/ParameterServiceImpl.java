@@ -33,6 +33,10 @@ public class ParameterServiceImpl implements ParameterService {
     {
         return parameterDao.deleteParameter(id);
     }
+    public int updateParameter(Parameter parameter)
+    {
+        return parameterDao.updateParameter(parameter);
+    }
 
 
 }
