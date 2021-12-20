@@ -10,6 +10,11 @@
     <select id="selectParameterByModel" resultType="Parameter">
         SELECT * FROM parameter WHERE uid = #{uid} and model = #{model}
     </select>
+
+    <select id="selectParameterByName" resultType="Parameter">
+        SELECT * FROM parameter WHERE uid = #{uid} and model = #{model} and name = #{name}
+    </select>
+
     <select id="selectParameterDefault" resultType="Parameter">
         SELECT * FROM parameter WHERE type='default' and model = #{model}
     </select>

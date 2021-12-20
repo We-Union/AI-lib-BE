@@ -37,6 +37,11 @@ public class ParameterServiceImpl implements ParameterService {
     {
         return parameterDao.updateParameter(parameter);
     }
+    public List<Parameter> selectParameterByName(long uid,String model,String name)
+    {
+        return parameterDao.selectParameterByName(uid,model,name);
+    }
+
 
 
 }

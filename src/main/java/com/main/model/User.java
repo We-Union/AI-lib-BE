@@ -7,7 +7,7 @@ public class User {
     private String username;
     private String nickname;
     private String password;
-
+    private long type;
     public long getId()
     {
         return id;
@@ -48,5 +48,17 @@ public class User {
     {
         return password;
     }
+
+    public void setType(long type)
+    {
+        this.type = type;
+    }
+
+    public long getType()
+    {
+        return type;
+    }
+
+
 
 }

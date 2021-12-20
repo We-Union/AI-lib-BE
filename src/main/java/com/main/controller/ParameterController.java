@@ -11,13 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
-
+import com.main.model.User;
+import com.main.service.UserService;
 @RestController
 @RequestMapping("/parameter")
 public class ParameterController {
     @Autowired
     ParameterService parameterService;
-
+    @Autowired
+    UserService userService;
     @ResponseBody
     @RequestMapping(value="/getbyid",produces="application/json;charset=UTF-8",method = RequestMethod.GET)
     public String getParameterByid(HttpServletRequest request)
@@ -132,6 +134,15 @@ public class ParameterController {
         {
             return JsonData.buildError(2001,"缺少参数");
         }
+        if(name.equals("默认"))
+        {
+            return JsonData.buildError(2002,"为避免混淆，请勿使用”默认“作为参数名称");
+        }
+        List <Parameter> get_by_name = parameterService.selectParameterByName(uid,model,name);
+        if (get_by_name.size() !=0 )
+        {
+            return JsonData.buildError(2002,"已存在相同名称参数");
+        }
         Parameter parameter = new Parameter();
         parameter.setName(name);
         parameter.setModel(model);
@@ -142,6 +153,40 @@ public class ParameterController {
         return JsonData.buildSuccess();
     }
 
+    @ResponseBody
+    @RequestMapping(value="/adddefault",produces="application/json;charset=UTF-8",method = RequestMethod.POST)
+    public String addDefaultParameter(HttpServletRequest request,@RequestBody Map<String,String> map)
+    {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("uid") == null) {
+            return JsonData.buildError(4004, "你还未登录，请先登录");
+        }
+        long uid = (long)session.getAttribute("uid");
+        String model = map.get("model");
+        String value = map.get("value");
+        if(model == null || value == null)
+        {
+            return JsonData.buildError(2001,"缺少参数");
+        }
+
+        User user = userService.selectUserByID(uid);
+        if(user.getType()!=1 )
+        {
+            return JsonData.buildError(4003,"只有超级管理员才有权添加默认参数");
+        }
+        if(parameterService.selectParameterDefault(model) != null)
+        {
+            return JsonData.buildError(4003,"默认参数已存在，请删除后重新添加");
+        }
+        Parameter parameter = new Parameter();
+        parameter.setName("默认");
+        parameter.setModel(model);
+        parameter.setType("default");
+        parameter.setUid(uid);
+        parameter.setValue(value);
+        int result = parameterService.addParameter(parameter);
+        return JsonData.buildSuccess();
+    }
     @ResponseBody
     @RequestMapping(value="/update",produces="application/json;charset=UTF-8",method = RequestMethod.PUT)
     public String updateParameter(HttpServletRequest request,@RequestBody Map<String,String> map)
